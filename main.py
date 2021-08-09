@@ -18,7 +18,12 @@ def menu():
             elif opcion==3:
                 print('Escribir archivo salida')
             elif opcion==4:
-                print('Mostrar datos Estudiante')
+                print('Datos del Estudiante:')
+                print('> Luis Angel Barrera Velásquez')
+                print('> 202010223')
+                print('> Introducción a la Programación y Computación 2 sección E')
+                print('> Ingenieria en Ciencias y Sistemas')
+                print('> 4to Semestre')
             elif opcion==5:
                 print('Generar gráfica')
             elif opcion==6:
