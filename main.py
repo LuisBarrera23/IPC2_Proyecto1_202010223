@@ -11,8 +11,25 @@ def menu():
         print("----------------------------------")
         try:
             opcion=int(input('Ingrese el numero de opción deseada:\n'))
+            if opcion==1:
+                print('Cargar archivo')
+            elif opcion==2:
+                print('Procesar archivo')
+            elif opcion==3:
+                print('Escribir archivo salida')
+            elif opcion==4:
+                print('Mostrar datos Estudiante')
+            elif opcion==5:
+                print('Generar gráfica')
+            elif opcion==6:
+                print("Saliendo del programa")
+                exit(0)
+            else:
+                print("Opción no valida")
 
         except:
+            if opcion==6:
+                exit(0)
             print("Error, vuelva a intentarlo")
 
 
