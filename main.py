@@ -1,3 +1,30 @@
+from xml.dom import minidom
+
+def lecturaXml():
+    ruta=input("Ingresa la ruta del archivo XML que desea cargar")
+    documento=minidom.parse(ruta)
+    terrenos=documento.getElementsByTagName("terreno")
+    for terreno in terrenos:
+        nombre=terreno.getAttribute("nombre")
+        posicioninicio=terreno.getElementsByTagName("posicioninicio")[0]
+        iniX=posicioninicio.getElementsByTagName("x")[0].firstChild.data
+        iniY=posicioninicio.getElementsByTagName("y")[0].firstChild.data
+
+        posicionfinal=terreno.getElementsByTagName("posicionfin")[0]
+        finX=posicionfinal.getElementsByTagName("x")[0].firstChild.data
+        finY=posicionfinal.getElementsByTagName("y")[0].firstChild.data
+        print("posicion inicio para:",nombre, "X=",iniX,"Y=",iniY,", su posicion final es:","X=",finX,"Y=",finY)
+
+        posiciones=terreno.getElementsByTagName("posicion")
+
+        for posicion in posiciones:
+            posX=posicion.getAttribute("x")
+            posY=posicion.getAttribute("y")
+            combustible=posicion.firstChild.data
+            print("posicion:","X:",posX,"Y:",posY,"gasta combustible:",combustible)
+    
+
+
 def menu():
     opcion=0
     while True:
@@ -13,6 +40,7 @@ def menu():
             opcion=int(input('Ingrese el numero de opción deseada:\n'))
             if opcion==1:
                 print('Cargar archivo')
+                lecturaXml()
             elif opcion==2:
                 print('Procesar archivo')
             elif opcion==3:
