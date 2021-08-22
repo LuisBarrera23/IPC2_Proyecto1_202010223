@@ -1,5 +1,11 @@
-<terrenos>
+
+
+ <terrenos>
 	<terreno nombre="terreno1">
+		<dimension>
+			<m>5</m>
+			<n>5</n>
+		</dimension>
 		<posicioninicio>
 			<x>1</x>
 			<y>1</y>
@@ -34,7 +40,11 @@
 		<posicion x="5" y="4">1</posicion>
 		<posicion x="5" y="5">1</posicion>
 	</terreno>
-	<!-- <terreno nombre="terreno2">
+	<terreno nombre="terreno2">
+		<dimension>
+			<m>7</m>
+			<n>4</n>
+		</dimension>
 		<posicioninicio>
 		<x>2</x>
 		<y>2</y>
@@ -71,5 +81,5 @@
 		<posicion x="7" y="2">1</posicion>
 		<posicion x="7" y="3">1</posicion>
 		<posicion x="7" y="4">1</posicion>
-	</terreno> -->
+	</terreno>
 </terrenos>
