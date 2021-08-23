@@ -3,3 +3,4 @@ class area:
         self.posx=posx
         self.posy=posy
         self.combustible=combustible
+        self.usado=False

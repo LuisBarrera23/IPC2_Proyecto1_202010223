@@ -4,12 +4,12 @@ from ListaTerrenos import listaT
 from Area import area
 from ListaAreas import listaA
 
-Terrenos=None
+Terrenos=listaT()
 
 def lecturaXml():
-    Terrenos=listaT()
+    global Terrenos
 
-    ruta=input("Ingresa la ruta del archivo XML que desea cargar")
+    ruta=input("Ingresa la ruta del archivo XML que desea cargar: ")
     documento=minidom.parse(ruta)
     Listado=documento.getElementsByTagName("terreno")
     for t in Listado:
@@ -17,24 +17,24 @@ def lecturaXml():
         nombre=t.getAttribute("nombre")
 
         dimensiones=t.getElementsByTagName("dimension")[0]
-        m=dimensiones.getElementsByTagName("m")[0].firstChild.data
-        n=dimensiones.getElementsByTagName("n")[0].firstChild.data
+        m=int(dimensiones.getElementsByTagName("m")[0].firstChild.data)
+        n=int(dimensiones.getElementsByTagName("n")[0].firstChild.data)
 
         posicioninicio=t.getElementsByTagName("posicioninicio")[0]
-        iniX=posicioninicio.getElementsByTagName("x")[0].firstChild.data
-        iniY=posicioninicio.getElementsByTagName("y")[0].firstChild.data
+        iniX=int(posicioninicio.getElementsByTagName("x")[0].firstChild.data)
+        iniY=int(posicioninicio.getElementsByTagName("y")[0].firstChild.data)
 
         posicionfinal=t.getElementsByTagName("posicionfin")[0]
-        finX=posicionfinal.getElementsByTagName("x")[0].firstChild.data
-        finY=posicionfinal.getElementsByTagName("y")[0].firstChild.data
+        finX=int(posicionfinal.getElementsByTagName("x")[0].firstChild.data)
+        finY=int(posicionfinal.getElementsByTagName("y")[0].firstChild.data)
         #print("posicion inicio para:",nombre, "X=",iniX,"Y=",iniY,", su posicion final es:","X=",finX,"Y=",finY)
 
         posiciones=t.getElementsByTagName("posicion")
 
         for posicion in posiciones:
-            posX=posicion.getAttribute("x")
-            posY=posicion.getAttribute("y")
-            combustible=posicion.firstChild.data
+            posX=int(posicion.getAttribute("x"))
+            posY=int(posicion.getAttribute("y"))
+            combustible=int(posicion.firstChild.data)
             #print("posicion:","X:",posX,"Y:",posY,"gasta combustible:",combustible)
             Area=area(posX,posY,combustible)
             areas.insertar(Area)
@@ -43,11 +43,48 @@ def lecturaXml():
 
     Terrenos.recorrer()
     
+def analizarTerreno(terreno):
+    mapa=terreno.mapa
+    iniX=terreno.posXinicio
+    iniY=terreno.posYinicio
+    finX=terreno.posXfinal
+    finY=terreno.posYfinal
+    m=terreno.m
+    n=terreno.n
 
+    actualx=iniX
+    actualy=iniY
+    print(actualx,actualy)
+    mapa.actualizar(actualx,actualy)
+    while actualx!=finX or actualy!=finY:
+        if actualx<finX:
+            actualx+=1
+            mapa.actualizar(actualx,actualy)
+            print(actualx,actualy)
+            continue
+        if actualx>finX:
+            actualx-=1
+            mapa.actualizar(actualx,actualy)
+            print(actualx,actualy)
+            continue
+        if actualy<finY:
+            actualy+=1
+            mapa.actualizar(actualx,actualy)
+            print(actualx,actualy)
+            continue
+        if actualy>finY:
+            actualy-=1
+            mapa.actualizar(actualx,actualy)
+            print(actualx,actualy)
+            continue
+    mapa.recorrer()
     
 
+        
+    
 
 def menu():
+    global Terrenos
     opcion=0
     while True:
         print("----------MENU PRINCIPAL----------")
@@ -61,10 +98,16 @@ def menu():
         try:
             opcion=int(input('Ingrese el numero de opción deseada:\n'))
             if opcion==1:
-                print('Cargar archivo')
                 lecturaXml()
             elif opcion==2:
-                print('Procesar archivo')
+                if Terrenos.primero:
+                    Terrenos.recorrer()
+                    nombre=str(input("Ingrese el nombre del terreno que desea procesar: "))
+                    solicitado=Terrenos.buscar(nombre)
+                    analizarTerreno(solicitado)
+                else:
+                    print("Por favor Cargue primero el archivo XML")
+
             elif opcion==3:
                 print('Escribir archivo salida')
             elif opcion==4:

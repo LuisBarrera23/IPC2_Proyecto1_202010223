@@ -16,9 +16,12 @@ class listaT:
     def recorrer(self):
         actual=self.primero
         while actual:
-            print("Nombre:",actual.terreno.nombre)
-            print("posinicio:(",actual.terreno.posXinicio,actual.terreno.posYinicio,")")
-            print("posfinal:(",actual.terreno.posXfinal,actual.terreno.posYfinal,")")
-            print("dimensiones:(",actual.terreno.m,actual.terreno.n,")")
-            actual.terreno.mapa.recorrer()
-            actual=actual.siguiente      
+            print("Nombre:",actual.terreno.nombre,"\tdimensiones:",actual.terreno.m,"x",actual.terreno.n)
+            actual=actual.siguiente     
+
+    def buscar(self,nombre):
+        actual=self.primero
+        while actual:
+            if actual.terreno.nombre==nombre:
+                return actual.terreno
+            actual=actual.siguiente
