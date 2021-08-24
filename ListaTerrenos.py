@@ -25,3 +25,13 @@ class listaT:
             if actual.terreno.nombre==nombre:
                 return actual.terreno
             actual=actual.siguiente
+
+    def actualizarmapa(self,nombre,mapa,combustible):
+        actual=self.primero
+        while actual:
+            if actual.terreno.nombre==nombre:
+                actual.terreno.mapa=mapa
+                actual.terreno.analizado=True
+                return
+            actual=actual.siguiente
+

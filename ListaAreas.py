@@ -1,3 +1,4 @@
+from Area import area
 from Nodoarea import nodoarea
 
 class listaA:
@@ -25,3 +26,11 @@ class listaA:
             if actual.area.posx==x and actual.area.posy==y:
                 actual.area.usado=True
             actual=actual.siguiente
+
+    def buscar(self,x,y):
+        actual=self.primero
+        while actual:
+            if actual.area.posx==x and actual.area.posy==y:
+                return actual.area
+            actual=actual.siguiente
+        return None

@@ -8,3 +8,5 @@ class terreno:
         self.m=m
         self.n=n
         self.mapa=mapa
+        self.analizado=False
+        self.combustible=0

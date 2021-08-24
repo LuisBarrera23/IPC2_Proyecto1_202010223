@@ -8,6 +8,7 @@ Terrenos=listaT()
 
 def lecturaXml():
     global Terrenos
+    Terrenos=listaT()
 
     ruta=input("Ingresa la ruta del archivo XML que desea cargar: ")
     documento=minidom.parse(ruta)
@@ -41,7 +42,8 @@ def lecturaXml():
         Terreno=terreno(nombre,iniX,iniY,finX,finY,m,n,areas)
         Terrenos.insertar(Terreno)
 
-    Terrenos.recorrer()
+def escrituraXml(terreno):
+    pass
     
 def analizarTerreno(terreno):
     mapa=terreno.mapa
@@ -51,33 +53,51 @@ def analizarTerreno(terreno):
     finY=terreno.posYfinal
     m=terreno.m
     n=terreno.n
+    combustible=0
 
     actualx=iniX
     actualy=iniY
-    print(actualx,actualy)
     mapa.actualizar(actualx,actualy)
     while actualx!=finX or actualy!=finY:
         if actualx<finX:
             actualx+=1
             mapa.actualizar(actualx,actualy)
-            print(actualx,actualy)
             continue
         if actualx>finX:
             actualx-=1
             mapa.actualizar(actualx,actualy)
-            print(actualx,actualy)
             continue
         if actualy<finY:
             actualy+=1
             mapa.actualizar(actualx,actualy)
-            print(actualx,actualy)
             continue
         if actualy>finY:
             actualy-=1
             mapa.actualizar(actualx,actualy)
-            print(actualx,actualy)
             continue
-    mapa.recorrer()
+    
+    Terrenos.actualizarmapa(terreno.nombre,mapa,combustible)
+    cadena=""
+    print()
+    for j in range(1,m+1):
+        for i in range(1,n+1):
+            area=mapa.buscar(i,j)
+            if area is None:
+                continue
+            else:
+                cadena+="|"
+                if area.usado:
+                    cadena+=" 1 "
+                    combustible+=area.combustible
+                else:
+                    cadena+=" 0 "
+                cadena+="|"
+        cadena+="\n"
+    print(cadena)
+    Terrenos.actualizarmapa(terreno.nombre,mapa,combustible)
+    print("Combustible necesario: ",combustible,"unidades")
+
+
     
 
         
