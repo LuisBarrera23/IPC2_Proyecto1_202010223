@@ -32,6 +32,7 @@ class listaT:
             if actual.terreno.nombre==nombre:
                 actual.terreno.mapa=mapa
                 actual.terreno.analizado=True
+                actual.terreno.combustible=combustible
                 return
             actual=actual.siguiente
 

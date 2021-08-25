@@ -3,6 +3,7 @@ from Terreno import terreno
 from ListaTerrenos import listaT
 from Area import area
 from ListaAreas import listaA
+import time
 
 Terrenos=listaT()
 
@@ -42,7 +43,7 @@ def lecturaXml():
         Terreno=terreno(nombre,iniX,iniY,finX,finY,m,n,areas)
         Terrenos.insertar(Terreno)
 
-def escrituraXml(terreno):
+def escrituraXml(Tobjeto):
     pass
     
 def analizarTerreno(terreno):
@@ -78,9 +79,13 @@ def analizarTerreno(terreno):
     
     Terrenos.actualizarmapa(terreno.nombre,mapa,combustible)
     cadena=""
+    print("Calculando la mejor ruta")
+    time.sleep(5)
+    print("Calculando cantidad de combustible")
+    time.sleep(3)
     print()
-    for j in range(1,m+1):
-        for i in range(1,n+1):
+    for j in range(1,n+1):
+        for i in range(1,m+1):
             area=mapa.buscar(i,j)
             if area is None:
                 continue
@@ -97,11 +102,7 @@ def analizarTerreno(terreno):
     Terrenos.actualizarmapa(terreno.nombre,mapa,combustible)
     print("Combustible necesario: ",combustible,"unidades")
 
-
-    
-
-        
-    
+   
 
 def menu():
     global Terrenos
