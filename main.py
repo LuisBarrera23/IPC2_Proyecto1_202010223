@@ -43,8 +43,31 @@ def lecturaXml():
         Terreno=terreno(nombre,iniX,iniY,finX,finY,m,n,areas)
         Terrenos.insertar(Terreno)
 
-def escrituraXml(Tobjeto):
-    pass
+def escrituraXml(Tobjeto,destino):
+    f=open(destino,"w",encoding='UTF-8')
+    mapa=Tobjeto.mapa
+    nombre=Tobjeto.nombre
+    iniX=Tobjeto.posXinicio
+    iniY=Tobjeto.posYinicio
+    finX=Tobjeto.posXfinal
+    finY=Tobjeto.posYfinal
+    m=Tobjeto.m
+    n=Tobjeto.n
+    combustible=Tobjeto.combustible
+    documento="<terrenos nombre="+nombre+">"
+    documento+="\n\t<posicioninicio>\n\t\t<x>"+str(iniX)+"</x>\n\t\t<y>"+str(iniY)+"</y>\n\t</posicioninicio>"
+    documento+="\n\t<posicionfin>\n\t\t<x>"+str(finX)+"</x>\n\t\t<y>"+str(finY)+"</y>\n\t</posicionfin>"
+    documento+="\n\t<combustible>"+str(combustible)+"</posicion>"
+    for j in range(1,n+1):
+        for i in range(1,m+1):
+            area=mapa.buscar(i,j)
+            if area.usado:
+                documento+="\n\t<posicion x=\""+str(area.posx)+"\" y=\""+str(area.posy)+"\">1</posicion>"
+    f.write(documento)
+    f.close()
+    print("Se escribio el archivo satisfactoriamente")
+
+
     
 def analizarTerreno(terreno):
     mapa=terreno.mapa
@@ -79,9 +102,9 @@ def analizarTerreno(terreno):
     
     Terrenos.actualizarmapa(terreno.nombre,mapa,combustible)
     cadena=""
-    print("Calculando la mejor ruta")
-    time.sleep(5)
-    print("Calculando cantidad de combustible")
+    print("Calculando la mejor ruta...")
+    time.sleep(3)
+    print("Calculando cantidad de combustible...")
     time.sleep(3)
     print()
     for j in range(1,n+1):
@@ -100,6 +123,10 @@ def analizarTerreno(terreno):
         cadena+="\n"
     print(cadena)
     Terrenos.actualizarmapa(terreno.nombre,mapa,combustible)
+    if combustible<9999:
+        print("El Robot si llego a su destino")
+    else:
+        print("El Robot no llego a su destino, combustible insuficiente...")
     print("Combustible necesario: ",combustible,"unidades")
 
    
@@ -130,7 +157,14 @@ def menu():
                     print("Por favor Cargue primero el archivo XML")
 
             elif opcion==3:
-                print('Escribir archivo salida')
+                if Terrenos.primero:
+                    print('Los terrenos procesados son los siguientes:')
+                    comprobacion=Terrenos.verUsados()
+                    if comprobacion!=False:   
+                        nombre=str(input("Ingrese el nombre del terreno que desea generar el archivo XML: "))
+                        ruta=str(input("Escribir una ruta especifica: "))
+                        solicitado=Terrenos.buscar(nombre)
+                        escrituraXml(solicitado,ruta)
             elif opcion==4:
                 print('Datos del Estudiante:')
                 print('> Luis Angel Barrera Velásquez')

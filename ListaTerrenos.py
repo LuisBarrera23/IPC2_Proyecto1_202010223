@@ -35,4 +35,17 @@ class listaT:
                 actual.terreno.combustible=combustible
                 return
             actual=actual.siguiente
+    
+    def verUsados(self):
+        actual=self.primero
+        existencia=False
+        while actual:
+            if actual.terreno.analizado:
+                existencia=True
+                print(actual.terreno.nombre)
+            actual=actual.siguiente
+        if existencia is False:
+            print("Usted no a procesado terrenos")
+            return False
+
 
