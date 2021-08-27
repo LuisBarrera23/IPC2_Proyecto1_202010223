@@ -4,3 +4,4 @@ class area:
         self.posy=posy
         self.combustible=combustible
         self.usado=False
+        self.nombre=""

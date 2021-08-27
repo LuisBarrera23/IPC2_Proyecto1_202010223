@@ -4,6 +4,7 @@ from ListaTerrenos import listaT
 from Area import area
 from ListaAreas import listaA
 import time
+from os import system,startfile
 
 Terrenos=listaT()
 
@@ -66,8 +67,6 @@ def escrituraXml(Tobjeto,destino):
     f.write(documento)
     f.close()
     print("Se escribio el archivo satisfactoriamente")
-
-
     
 def analizarTerreno(terreno):
     mapa=terreno.mapa
@@ -129,7 +128,76 @@ def analizarTerreno(terreno):
         print("El Robot no llego a su destino, combustible insuficiente...")
     print("Combustible necesario: ",combustible,"unidades")
 
-   
+def graficarTerreno(terreno):
+    mapa=terreno.mapa
+    nombre=terreno.nombre
+    m=terreno.m
+    n=terreno.n
+    #asignando nombre a cada nodo area
+    iterador=1
+    for i in range(1,m+1):
+        for j in range(1,n+1):
+            area=mapa.buscar(i,j)
+            if area is None:
+                continue
+            else:
+                area.nombre="nodo"+str(iterador)
+                iterador+=1
+    cadena="""
+    graph grid{
+	layout=dot
+	labelloc = "t"
+	node [shape=ellipse]
+	// arbitrary path on rigid grid
+
+	edge [weight=1500 color=black]
+    """
+    for i in range(1,m+1):
+        for j in range(1,n+1):
+            area=mapa.buscar(i,j)
+            if area is None:
+                continue
+            else:
+                if area.usado:
+                    cadena+=str(area.nombre)+"[color=greenyellow style=filled label="+str(area.combustible)+"]\n"
+                else:
+                    cadena+=str(area.nombre)+"[color=skyblue style=filled label=\""+str(area.combustible)+"\"]\n"
+    for i in range(1,m+1):
+        for j in range(1,n+1):
+            area=mapa.buscar(i,j)
+            if area is None:
+                continue
+            else:
+                if j==n:
+                    cadena+=str(area.nombre)+"\n"
+                else:
+                    cadena+=str(area.nombre)+" --"
+    
+
+    print("gg")
+    for j in range(1,n+1):
+        cadena+="rank=same {"
+        for i in range(1,m+1):
+            area=mapa.buscar(i,j)
+            if area is None:
+                continue
+            else:
+                if i==m:
+                    cadena+=str(area.nombre)+"}\n"
+                else:
+                    cadena+=str(area.nombre)+" --"
+    print("gg")
+
+
+    cadena+="label="+str(nombre)+"}"
+    archivo=open("grafica"+str(nombre)+".dot","w")
+    archivo.write(cadena)
+    archivo.close()
+    original="grafica"+str(nombre)+".dot"
+    convertido="grafica"+str(nombre)+".png"
+    system("dot -Tpng "+original+" -o "+convertido)
+    startfile("grafica"+str(nombre)+".png")
+
 
 def menu():
     global Terrenos
@@ -173,7 +241,13 @@ def menu():
                 print('> Ingenieria en Ciencias y Sistemas')
                 print('> 4to Semestre')
             elif opcion==5:
-                print('Generar gráfica')
+                if Terrenos.primero:
+                    Terrenos.recorrer()
+                    nombre=str(input("Ingrese el nombre del terreno que desea graficar: "))
+                    solicitado=Terrenos.buscar(nombre)
+                    graficarTerreno(solicitado)
+                else:
+                    print("Por favor Cargue primero el archivo XML")
             elif opcion==6:
                 print("Saliendo del programa")
                 exit(0)
