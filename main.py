@@ -1,4 +1,5 @@
 from xml.dom import minidom
+from xml.dom.minidom import parseString
 from Terreno import terreno
 from ListaTerrenos import listaT
 from Area import area
@@ -13,7 +14,10 @@ def lecturaXml():
     Terrenos=listaT()
 
     ruta=input("Ingresa la ruta del archivo XML que desea cargar: ")
-    documento=minidom.parse(ruta)
+    a=open(ruta,"r")
+    cadena=a.read().lower()
+    a.close()
+    documento=minidom.parseString(cadena)
     Listado=documento.getElementsByTagName("terreno")
     for t in Listado:
         areas=listaA()
@@ -55,15 +59,16 @@ def escrituraXml(Tobjeto,destino):
     m=Tobjeto.m
     n=Tobjeto.n
     combustible=Tobjeto.combustible
-    documento="<terrenos nombre="+nombre+">"
+    documento="<terreno nombre="+nombre+">"
     documento+="\n\t<posicioninicio>\n\t\t<x>"+str(iniX)+"</x>\n\t\t<y>"+str(iniY)+"</y>\n\t</posicioninicio>"
     documento+="\n\t<posicionfin>\n\t\t<x>"+str(finX)+"</x>\n\t\t<y>"+str(finY)+"</y>\n\t</posicionfin>"
-    documento+="\n\t<combustible>"+str(combustible)+"</posicion>"
+    documento+="\n\t<combustible>"+str(combustible)+"</combustible>"
     for j in range(1,n+1):
         for i in range(1,m+1):
             area=mapa.buscar(i,j)
             if area.usado:
                 documento+="\n\t<posicion x=\""+str(area.posx)+"\" y=\""+str(area.posy)+"\">1</posicion>"
+    documento+="\n</terreno>"
     f.write(documento)
     f.close()
     print("Se escribio el archivo satisfactoriamente")
@@ -174,7 +179,6 @@ def graficarTerreno(terreno):
                     cadena+=str(area.nombre)+" --"
     
 
-    print("gg")
     for j in range(1,n+1):
         cadena+="rank=same {"
         for i in range(1,m+1):
@@ -186,7 +190,6 @@ def graficarTerreno(terreno):
                     cadena+=str(area.nombre)+"}\n"
                 else:
                     cadena+=str(area.nombre)+" --"
-    print("gg")
 
 
     cadena+="label="+str(nombre)+"}"
@@ -197,7 +200,6 @@ def graficarTerreno(terreno):
     convertido="grafica"+str(nombre)+".png"
     system("dot -Tpng "+original+" -o "+convertido)
     startfile("grafica"+str(nombre)+".png")
-
 
 def menu():
     global Terrenos
